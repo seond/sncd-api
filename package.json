@@ -1,0 +1,59 @@
+{
+   "name": "sncd-api",
+   "version": "0.0.0",
+   "description": "RESTful API service for resume",
+   "engines": {
+      "node": ">= 10.13"
+   },
+   "devDependencies": {
+      "@types/jest": "^24.0.0",
+      "@types/node": "^8.10.49",
+      "env-cmd": "^10.1.0",
+      "jest": "~24.8.0",
+      "nodemon": "^2.0.12",
+      "prettier": "~1.17.0",
+      "rimraf": "^2.6.3",
+      "ts-jest": "^24.0.0",
+      "ts-node": "3.3.0",
+      "tslint": "~5.16.0",
+      "tslint-config-prettier": "1.18.0",
+      "tslint-microsoft-contrib": "~6.1.0",
+      "tsutils": "~3.10.0",
+      "typescript": "~3.5.0"
+   },
+   "scripts": {
+      "dev": "env-cmd nodemon",
+      "clean": "rimraf coverage build tmp",
+      "build": "tsc -p tsconfig.release.json",
+      "build:watch": "tsc -w -p tsconfig.release.json",
+      "lint": "tslint -t stylish --project \"tsconfig.json\"",
+      "test": "jest --coverage",
+      "test:watch": "jest --watch"
+   },
+   "author": "Seon Kim",
+   "dependencies": {
+      "basic-auth": "^2.0.1",
+      "connect-flash": "^0.1.1",
+      "cookie-parser": "^1.4.5",
+      "cors": "^2.8.5",
+      "ejs": "^2.7.1",
+      "express": "^4.17.1",
+      "express-graphql": "^0.9.0",
+      "express-session": "^1.17.2",
+      "graphql": "^14.4.2",
+      "jsonwebtoken": "^8.5.1",
+      "md5": "^2.3.0",
+      "mongodb": "^3.0.8",
+      "node-fetch": "^2.6.1",
+      "passport": "^0.4.0",
+      "passport-auth-token": "^1.0.1",
+      "passport-http-bearer": "^1.0.1",
+      "passport-jwt": "^4.0.0",
+      "passport-local": "^1.0.0",
+      "pg": "^8.6.0",
+      "qs": "^6.8.0",
+      "reflect-metadata": "^0.1.10",
+      "tslib": "~1.9.3",
+      "typeorm": "0.2.25"
+   }
+}

@@ -1,0 +1,18 @@
+{
+  "auth_inactive": {
+    "type": "seon-auth",
+    "url": "http://localhost:7000",
+    "clientId": "devskills",
+    "clientSecret": "ds123"
+  },
+  "auth_inactive2": {
+    "type": "solo",
+    "ownerId": "5d6f1c82c1f8eb2cfc112e63",
+    "user": "user",
+    "secret": "secret"
+  },
+  "auth": {
+    "url": "/login",
+    "jwtSecret": "JWT_SECRET"
+  }
+}
