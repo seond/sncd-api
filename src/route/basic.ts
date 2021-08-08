@@ -17,7 +17,7 @@ export function basicRouterFactory(entity: string, router?: Router): Router {
   router.use(authenticateJwt);
 
   router.get('/', async (req: Request, res: Response) => {
-    const objs = await getAll(entity, req.user.userId, true).then(pluckDbObject);
+    const objs = await getAll(entity, req.user.id, true).then(pluckDbObject);
     const data = {};
     data[entity] = objs;
     res.status(200).json(data);
@@ -30,7 +30,7 @@ export function basicRouterFactory(entity: string, router?: Router): Router {
       res.status(400).send();
     }
 
-    const saved = await createEntity(entity, req.user.userId, payload).then(pluckDbObject);
+    const saved = await createEntity(entity, req.user.id, payload).then(pluckDbObject);
     res.status(202).json({
       data: saved
     });
@@ -38,7 +38,7 @@ export function basicRouterFactory(entity: string, router?: Router): Router {
 
   router.get('/:objId', async (req: Request, res: Response) => {
     try {
-      const obj = await getOneById(entity, req.user.userId, req.params['objId'], true).then(pluckDbObject);
+      const obj = await getOneById(entity, req.user.id, req.params['objId'], true).then(pluckDbObject);
       const data = {};
       data[entity] = obj;
       res.status(200).json(data);
@@ -55,14 +55,14 @@ export function basicRouterFactory(entity: string, router?: Router): Router {
       res.status(400).send();
     }
 
-    const saved = await updateEntityById(entity, req.user.userId, req.params['objId'], payload).then(pluckDbObject);
+    const saved = await updateEntityById(entity, req.user.id, req.params['objId'], payload).then(pluckDbObject);
     res.status(204).json({
       data: saved
     });
   });
 
   router.delete('/:objId', async (req: Request, res: Response) => {
-    await deleteEntityById(entity, req.user.userId, req.params['objId']);
+    await deleteEntityById(entity, req.user.id, req.params['objId']);
     res.status(200).send();
   });
 

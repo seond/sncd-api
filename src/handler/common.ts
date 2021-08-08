@@ -21,10 +21,10 @@ export function getAll(entity: string, userId: string, cascade: boolean = false)
   }
 }
 
-export function getOneById(entity: string, userId: string, objId: string, cascade: boolean = false): Promise<Object> {
+export async function getOneById(entity: string, userId: string, objId: string, cascade: boolean = false): Promise<Deck> {
   switch (entity) {
     case 'deck':
-      return getDeckById(userId, objId);
+      return await getDeckById(userId, objId);
   }
 }
 
@@ -38,8 +38,7 @@ async function getNewObject(entity: string, userId: string, payload: any): Promi
   return obj;
 }
 
-export function deleteEntityById(entity: string, userId: string, objId: string): Promise<Object> {
-  return getOneById(entity, userId, objId).then((obj: Deck) => {
-    return obj.delete();
-  });
+export async function deleteEntityById(entity: string, userId: string, objId: string): Promise<void> {
+  const obj: Deck = await getOneById(entity, userId, objId);
+  obj.delete();
 }

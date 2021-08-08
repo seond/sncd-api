@@ -49,41 +49,48 @@ export class Deck {
     });
   }
 
-  delete(): Promise<Object> {
-    return connection.then((conn: Connection) => {
-      return conn.manager.remove(this.dbObject);
-    });
+  async delete(): Promise<void> {
+    const conn = await connection;
+    if (!conn) {
+      // Error: connection not found
+      return;
+    }
+
+    await conn.manager.remove(this.dbObject);
   }
 }
 
-export function getOneById(userId: string, id: string): Promise<Object> {
-  return connection
-    .then((conn: Connection) => conn.manager.findOne(Entity, id))
-    .then((dbObject: Entity) => {
-      if (!dbObject || dbObject.owner.id !== userId) {
-        return null;
-      }
+export async function getOneById(userId: string, id: string): Promise<Deck> {
+  const conn = await connection;
+  if (!conn) {
+    return null;
+  }
 
-      let obj = new Deck();
-      obj.setPropertiesFromDbObject(dbObject);
+  const dbObject = await conn.manager.findOne(Entity, id, { relations: ['owner'] });
+  if (!dbObject || dbObject.owner.id !== userId) {
+    return null;
+  }
 
-      return obj;
-    });
+  let obj = new Deck();
+  obj.setPropertiesFromDbObject(dbObject);
+
+  return obj;
 }
 
-export function getAll(userId: string): Promise<Object> {
-  return connection
-    // .then((conn: Connection) => conn.manager.find(Entity, { owner: userId }))
-    .then((conn: Connection) => conn.manager.find(Entity))
-    .then((dbObjects: Entity[]) => {
-      if (!dbObjects) {
-        return null;
-      }
+export async function getAll(userId: string): Promise<Object> {
+  const conn = await connection;
+  if (!conn) {
+    return null;
+  }
 
-      return dbObjects.map(dbObject => {
-        let obj = new Deck();
-        obj.setPropertiesFromDbObject(dbObject);
-        return obj;
-      });
-    });
+  const dbObjects = await conn.manager.find(Entity);
+  if (!dbObjects) {
+    return null;
+  }
+
+  return dbObjects.map(dbObject => {
+    let obj = new Deck();
+    obj.setPropertiesFromDbObject(dbObject);
+    return obj;
+  });
 }
