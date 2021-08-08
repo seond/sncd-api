@@ -3,7 +3,6 @@
 import { Deck, getOneById as getDeckById, getAll as getAllDecks } from '../model/deck';
 
 export async function createEntity(entity: string, userId: string, payload: Object): Promise<Object> {
-  console.log(payload);
   const obj = await getNewObject(entity, userId, payload);
   return await obj.save();
 }

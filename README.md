@@ -1,11 +1,12 @@
 # Sncd API
 
-### Authentication
+### Environment Variables
 
-There are 3 authentication modes for authentication, which is configurable in `dsconfig.json`.
 
-1. `seon-auth`
-Required fields : `url`, `clientId`, `clientSecret`
-
-2. `solo`
-Required fields  `ownerId`, `user`, `secret`
+```
+DB_HOST=[PostgreSQL Host]
+DB_USER=[PostgreSQL User]
+DB_PASS=[PostgreSQL Password]
+DB_DATABASE=[PostgreSQL Database]
+DISABLE_GRAPHQL=true
+```
