@@ -7,6 +7,12 @@ export class Deck {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
+    @Column()
+    strmId: string;
+
+    @Column()
+    strmPatchKey: string;
+
     @ManyToOne(() => User, user => user.decks)
     owner: User;
 

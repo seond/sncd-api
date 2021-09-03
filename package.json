@@ -1,7 +1,7 @@
 {
    "name": "sncd-api",
-   "version": "0.0.0",
-   "description": "RESTful API service for resume",
+   "version": "1.0.0",
+   "description": "Sncd API",
    "engines": {
       "node": ">= 10.13"
    },
@@ -32,6 +32,7 @@
    },
    "author": "Seon Kim",
    "dependencies": {
+      "axios": "^0.21.1",
       "basic-auth": "^2.0.1",
       "connect-flash": "^0.1.1",
       "cookie-parser": "^1.4.5",

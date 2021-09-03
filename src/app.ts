@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 
 import { router } from './route';
+import bootstrap from './bootstrap';
 import { middleware as graphQL } from './graphql';
 
 
@@ -23,7 +24,10 @@ app.use(expressSession({ secret: 's3sions3cr3t', maxAge:null }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/', router);
+bootstrap(() => {
+  console.log('Bootstrap complete: opening up API routes');
+  app.use('/', router);
+});
 
 if (!process.env.DISABLE_GRAPHQL) {
   app.use('/graphql', graphQL);

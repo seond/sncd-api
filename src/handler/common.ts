@@ -33,6 +33,7 @@ async function getNewObject(entity: string, userId: string, payload: any): Promi
   switch (entity) {
     case 'deck':
       obj = new Deck();
+      await obj.init();
       await obj.setPropertiesFromPayload(userId, payload);
   }
   return obj;
