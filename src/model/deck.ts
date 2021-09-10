@@ -1,6 +1,6 @@
 'use strict'
 
-import { Connection, Exclusion } from 'typeorm'
+import { Connection } from 'typeorm'
 import axios from 'axios';
 
 import { STRM_API_URL } from '../common/config';
@@ -9,7 +9,10 @@ import { getStrmToken } from '../common/strm';
 import { connection } from '../database';
 import { Deck as Entity } from './entity/deck';
 import { User as UserEntity } from './entity/user';
-import { User, getOneById as getUserById } from './user';
+import { getOneById as getUserById } from './user';
+
+const DEFAULT_SLIDES = '[]';
+const DEFAULT_CURRENT_SLIDE = 0;
 
 export class Deck {
   id: string;
@@ -28,8 +31,10 @@ export class Deck {
     const strmToken = await getStrmToken();
     try {
       const strmDocRes = await axios.post(`${STRM_API_URL}/api/v1/docs`, {
-        data: {
-          description: `Sncd Deck ${this.dbObject.id}`
+        description: `Sncd Deck`,
+        document: {
+          slides: DEFAULT_SLIDES,
+          currentSlide: DEFAULT_CURRENT_SLIDE
         }
       }, {
         headers: {
@@ -53,6 +58,12 @@ export class Deck {
     if (dbObject.owner) {
       this.owner = dbObject.owner;
     }
+    if (dbObject.strmId) {
+      this.strmId = dbObject.strmId;
+    }
+    if (dbObject.strmPatchKey) {
+      this.strmPatchKey = dbObject.strmPatchKey;
+    }
     if (dbObject.slides) {
       this.slides = dbObject.slides;
     }
@@ -65,8 +76,8 @@ export class Deck {
     const owner = await getUserById(payload.owner);
 
     this.owner = owner.dbObject;
-    this.slides = payload.slides ? payload.slides : '';
-    this.currentSlide = payload.currentSlide || 0;
+    this.slides = payload.slides ? payload.slides : DEFAULT_SLIDES;
+    this.currentSlide = payload.currentSlide || DEFAULT_CURRENT_SLIDE;
   }
 
   save(): Promise<Object> {

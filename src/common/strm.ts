@@ -16,3 +16,7 @@ export async function getStrmToken(): Promise<string> {
     }
     return token;
 }
+
+export function convertToSncdDeck(doc) {
+    return doc;
+}

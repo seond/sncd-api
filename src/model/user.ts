@@ -1,6 +1,5 @@
 'use strict'
 
-import { Connection } from 'typeorm'
 import md5 from 'md5';
 
 import { connection } from '../database';

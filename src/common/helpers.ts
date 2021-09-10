@@ -1,4 +1,6 @@
-const objectKeyList = ['skills', 'stories', 'chapter'];
+import url from 'url';
+
+const objectKeyList = ['users', 'decks'];
 
 export function pluckDbObject(obj: any) {
   if (!obj) {
@@ -49,4 +51,22 @@ export function parseWrappedKeywords(str: String): String[] {
   }
 
   return parsed;
+}
+
+export function parseUrlQueryParams(urlToParse) {
+  const parsedUrl = url.parse(urlToParse);
+  const queryParamsString = parsedUrl.query;
+  const splitted = queryParamsString.split('&');
+  if (!splitted || splitted.length === 0) {
+      return;
+  }
+
+  const params = {};
+  splitted.filter(splitStr => splitStr.indexOf('=') >= 0)
+      .forEach(splitStr => {
+          const keyAndValue = splitStr.split('=');
+          params[keyAndValue[0]] = keyAndValue[1];
+      });
+  
+  return params;
 }
