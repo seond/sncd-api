@@ -11,7 +11,7 @@ import { Deck as Entity } from './entity/deck';
 import { User as UserEntity } from './entity/user';
 import { getOneById as getUserById } from './user';
 
-const DEFAULT_SLIDES = '[]';
+const DEFAULT_SLIDES = [];
 const DEFAULT_CURRENT_SLIDE = 0;
 
 export class Deck {
@@ -19,7 +19,7 @@ export class Deck {
   strmId: string;
   strmPatchKey: string;
   owner: UserEntity;
-  slides: string;
+  slides: string[];
   currentSlide: number;
   dbObject: Entity;
 
@@ -27,14 +27,16 @@ export class Deck {
     this.dbObject = new Entity();
   }
 
-  async init() {
+  async init(userId, payload) {
+    await this.setPropertiesFromPayload(userId, payload);
+    
     const strmToken = await getStrmToken();
     try {
       const strmDocRes = await axios.post(`${STRM_API_URL}/api/v1/docs`, {
         description: `Sncd Deck`,
         document: {
-          slides: DEFAULT_SLIDES,
-          currentSlide: DEFAULT_CURRENT_SLIDE
+          slides: this.slides,
+          currentSlide: this.currentSlide
         }
       }, {
         headers: {

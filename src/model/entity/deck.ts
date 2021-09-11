@@ -16,8 +16,8 @@ export class Deck {
     @ManyToOne(() => User, user => user.decks)
     owner: User;
 
-    @Column()
-    slides: string;
+    @Column("text", { array: true })
+    slides: string[];
 
     @Column()
     currentSlide: number;

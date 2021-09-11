@@ -1,10 +1,10 @@
-import WebSocket, { Server as WSServer } from 'ws';
+import { Server as WSServer } from 'ws';
 import { Strm } from 'strm-client-lib';
 
 import { STRM_API_URL, STRM_CS_URL } from './common/config';
 import { getOneById as getDeckById } from './model/deck';
 import { parseUrlQueryParams } from './common/helpers';
-import { getStrmToken, convertToSncdDeck } from './common/strm';
+import { getStrmToken } from './common/strm';
 
 const conns = {};
 
