@@ -1,7 +1,7 @@
 {
    "name": "sncd-api",
-   "version": "0.0.0",
-   "description": "RESTful API service for resume",
+   "version": "1.0.0",
+   "description": "Sncd API",
    "engines": {
       "node": ">= 10.13"
    },
@@ -32,6 +32,7 @@
    },
    "author": "Seon Kim",
    "dependencies": {
+      "axios": "^0.21.1",
       "basic-auth": "^2.0.1",
       "connect-flash": "^0.1.1",
       "cookie-parser": "^1.4.5",
@@ -53,7 +54,10 @@
       "pg": "^8.6.0",
       "qs": "^6.8.0",
       "reflect-metadata": "^0.1.10",
+      "socket.io-client": "^4.2.0",
+      "strm-client-lib": "file:../../strm/strm-client-lib",
       "tslib": "~1.9.3",
-      "typeorm": "0.2.25"
+      "typeorm": "0.2.25",
+      "ws": "^8.2.1"
    }
 }
