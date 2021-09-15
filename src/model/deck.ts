@@ -69,7 +69,7 @@ export class Deck {
     if (dbObject.slides) {
       this.slides = dbObject.slides;
     }
-    if (dbObject.currentSlide) {
+    if (dbObject.currentSlide !== undefined) {
       this.currentSlide = dbObject.currentSlide;
     }
   }
