@@ -10,6 +10,7 @@ export class Deck {
     @Column()
     strmId: string;
 
+    // TODO: Update to the correct name (strmActionKey)
     @Column()
     strmPatchKey: string;
 
