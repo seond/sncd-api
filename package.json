@@ -43,6 +43,7 @@
       "express-session": "^1.17.2",
       "graphql": "^14.4.2",
       "jsonwebtoken": "^8.5.1",
+      "lodash": "^4.17.21",
       "md5": "^2.3.0",
       "mongodb": "^3.0.8",
       "node-fetch": "^2.6.1",
@@ -55,7 +56,7 @@
       "qs": "^6.8.0",
       "reflect-metadata": "^0.1.10",
       "socket.io-client": "^4.2.0",
-      "strm-client-lib": "file:../../strm/strm-client-lib",
+      "@leetim25/strm": "1.1.0",
       "tslib": "~1.9.3",
       "typeorm": "0.2.25",
       "ws": "^8.2.1"
