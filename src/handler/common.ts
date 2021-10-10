@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 import { Deck, getOneById as getDeckById, getAll as getAllDecks } from '../model/deck';
 

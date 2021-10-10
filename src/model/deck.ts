@@ -23,8 +23,12 @@ export class Deck {
   currentSlide: number;
   dbObject: Entity;
 
-  constructor() {
-    this.dbObject = new Entity();
+  constructor(dbObject?: Entity) {
+    if (dbObject) {
+      this.setPropertiesFromDbObject(dbObject);
+    } else {
+      this.dbObject = new Entity();
+    }
   }
 
   async init(userId, payload) {
@@ -100,7 +104,11 @@ export class Deck {
       return;
     }
 
-    await conn.manager.remove(this.dbObject);
+    try {
+      await conn.manager.remove(this.dbObject);
+    } catch (ex) {
+      console.log(`Error deleting a deck ${this.id}`);
+    }
   }
 }
 
