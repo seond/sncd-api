@@ -36,7 +36,6 @@ export class User {
     if (dbObject.decks) {
       this.decks = dbObject.decks.map(dbDeckObject => new Deck(dbDeckObject));
     }
-    console.log(dbObject.teams);
     if (dbObject.teams) {
       this.teams = dbObject.teams.map(dbTeamObject => new Team(dbTeamObject));
     }

@@ -33,7 +33,6 @@ export class Team {
     if (dbObject.description) {
       this.description = dbObject.description;
     }
-    console.log(dbObject.owner);
     if (dbObject.owner) {
       this.owner = new User(dbObject.owner);
     }
