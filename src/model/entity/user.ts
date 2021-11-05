@@ -19,7 +19,11 @@ export class User {
     @OneToMany(() => Deck, deck => deck.owner)
     decks: Deck[];
 
-    @ManyToMany(() => Team)
-    @JoinTable()
+    // Teams that the user "owns"
+    @OneToMany(() => Team, team => team.owner)
+    teamsOwned: Team[];
+
+    // Teams the user "belongs to"
+    @ManyToMany(() => Team, team => team.members)
     teams: Team[];
 }

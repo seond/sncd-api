@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable } from 'typeorm';
 import { User } from './user';
 
 @Entity()
@@ -12,7 +12,10 @@ export class Team {
     @Column()
     description: string;
 
-    @ManyToMany(() => User)
+    @ManyToOne(() => User, user => user.teamsOwned)
+    owner: User;
+
+    @ManyToMany(() => User, user => user.teams)
     @JoinTable()
     members: User[];
 }

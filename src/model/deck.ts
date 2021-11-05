@@ -8,8 +8,7 @@ import { getStrmToken } from '../common/strm';
 
 import { connection } from '../database';
 import { Deck as Entity } from './entity/deck';
-import { User as UserEntity } from './entity/user';
-import { getOneById as getUserById } from './user';
+import { User, getOneById as getUserById } from './user';
 
 const DEFAULT_SLIDES = [];
 const DEFAULT_CURRENT_SLIDE = 0;
@@ -18,7 +17,7 @@ export class Deck {
   id: string;
   strmId: string;
   strmPatchKey: string;
-  owner: UserEntity;
+  owner: User;
   slides: string[];
   currentSlide: number;
   dbObject: Entity;
@@ -62,7 +61,7 @@ export class Deck {
     this.dbObject = dbObject;
     this.id = dbObject.id;
     if (dbObject.owner) {
-      this.owner = dbObject.owner;
+      this.owner = new User(dbObject.owner);
     }
     if (dbObject.strmId) {
       this.strmId = dbObject.strmId;
@@ -81,14 +80,14 @@ export class Deck {
   async setPropertiesFromPayload(userId: string, payload: any) {
     const owner = await getUserById(payload.owner);
 
-    this.owner = owner.dbObject;
+    this.owner = owner;
     this.slides = payload.slides ? payload.slides : DEFAULT_SLIDES;
     this.currentSlide = payload.currentSlide || DEFAULT_CURRENT_SLIDE;
   }
 
   save(): Promise<Object> {
     return connection.then((conn: Connection) => {
-      this.dbObject.owner = this.owner;
+      this.dbObject.owner = this.owner.dbObject;
       this.dbObject.strmId = this.strmId;
       this.dbObject.strmPatchKey = this.strmPatchKey;
       this.dbObject.slides = this.slides;

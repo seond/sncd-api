@@ -16,8 +16,12 @@ export class User {
   teams: Team[];
   dbObject: Entity;
 
-  constructor() {
-    this.dbObject = new Entity();
+  constructor(dbObject?: Entity) {
+    if (dbObject) {
+      this.setPropertiesFromDbObject(dbObject);
+    } else {
+      this.dbObject = new Entity();
+    }
   }
 
   setPropertiesFromDbObject(dbObject: Entity) {
@@ -32,6 +36,7 @@ export class User {
     if (dbObject.decks) {
       this.decks = dbObject.decks.map(dbDeckObject => new Deck(dbDeckObject));
     }
+    console.log(dbObject.teams);
     if (dbObject.teams) {
       this.teams = dbObject.teams.map(dbTeamObject => new Team(dbTeamObject));
     }
