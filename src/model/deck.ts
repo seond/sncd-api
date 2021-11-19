@@ -5,10 +5,13 @@ import axios from 'axios';
 
 import { STRM_API_URL } from '../common/config';
 import { getStrmToken } from '../common/strm';
+import { isAllowedToUser } from '../common/access';
 
 import { connection } from '../database';
 import { Deck as Entity } from './entity/deck';
 import { User, getOneById as getUserById } from './user';
+import { getOneById as getTeamById } from './team';
+import { Permission, Permissioned, Access } from './entity/permissioned/base';
 
 const DEFAULT_SLIDES = [];
 const DEFAULT_CURRENT_SLIDE = 0;
@@ -20,6 +23,8 @@ export class Deck {
   owner: User;
   slides: string[];
   currentSlide: number;
+  permission: Permission;
+  parent: any; // Will be "DeckList" eventually
   dbObject: Entity;
 
   constructor(dbObject?: Entity) {
@@ -75,6 +80,9 @@ export class Deck {
     if (dbObject.currentSlide !== undefined) {
       this.currentSlide = dbObject.currentSlide;
     }
+    if (dbObject.permission) {
+      this.permission = dbObject.permission;
+    }
   }
 
   async setPropertiesFromPayload(userId: string, payload: any) {
@@ -92,6 +100,7 @@ export class Deck {
       this.dbObject.strmPatchKey = this.strmPatchKey;
       this.dbObject.slides = this.slides;
       this.dbObject.currentSlide = this.currentSlide;
+      this.dbObject.permission = this.permission;
       return conn.manager.save(this.dbObject);
     });
   }
@@ -109,6 +118,34 @@ export class Deck {
       console.log(`Error deleting a deck ${this.id}`);
     }
   }
+
+  async grantAccess(subjectId: string, access: number): Promise<boolean> {
+    let subjectType;
+    const subjectAsTeam = await getTeamById(subjectId);
+    if (subjectAsTeam) {
+      subjectType = 'TEAM';
+    } else {
+      const subjectAsUser = await getUserById(subjectId);
+      if (!subjectAsUser) {
+        return false;
+      }
+      subjectType = 'USER';
+    }
+    
+    if (!this.permission) {
+      this.permission = {};
+    }
+    
+    if (!this.permission.accessItems) {
+      this.permission.accessItems = [];
+    }
+
+    this.permission.accessItems.push({
+      subjectType,
+      subjectId,
+      access
+    });
+  }
 }
 
 export async function getOneById(userId: string, id: string): Promise<Deck> {
@@ -118,12 +155,18 @@ export async function getOneById(userId: string, id: string): Promise<Deck> {
   }
 
   const dbObject = await conn.manager.findOne(Entity, id, { relations: ['owner'] });
-  if (!dbObject || dbObject.owner.id !== userId) {
+
+  if (!dbObject/* || dbObject.owner.id !== userId*/) {
     return null;
   }
 
   let obj = new Deck();
   obj.setPropertiesFromDbObject(dbObject);
+
+  const user = await getUserById(userId);
+  if (obj.owner.id !== userId && !isAllowedToUser(user, obj as Permissioned, Access.Read)) {
+    return null;
+  }
 
   return obj;
 }

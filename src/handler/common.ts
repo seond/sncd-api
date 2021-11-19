@@ -27,7 +27,7 @@ export async function getOneById(entity: string, userId: string, objId: string, 
     case 'deck':
       return await getDeckById(userId, objId);
     case 'team':
-      return await getTeamById(userId, objId);
+      return await getTeamById(objId);
   }
 }
 
@@ -36,8 +36,10 @@ async function getNewObject(entity: string, userId: string, payload: any): Promi
   switch (entity) {
     case 'deck':
       obj = new Deck();
+      break;
     case 'team':
       obj = new Team();
+      break;
   }
   await obj.init(userId, payload);
   return obj;

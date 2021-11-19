@@ -7,13 +7,15 @@ export enum Access {
     Write
 }
 
-type AccessItem = {
-    subjectType: string;
+export type SubjectType = 'TEAM' | 'USER';
+
+export type AccessItem = {
+    subjectType: SubjectType;
     subjectId: string;
     access: Access;
 };
 
-type Permission = {
+export type Permission = {
     inheritParents?: boolean;
     accessItems?: AccessItem[];
 };

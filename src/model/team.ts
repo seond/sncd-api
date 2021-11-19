@@ -78,12 +78,7 @@ export class Team {
     }
   }
 
-  async addNewMember(newMember: User): Promise<Team> {
-    const conn = await connection;
-    if(!conn) {
-      return null;
-    }
-  
+  addNewMember(newMember: User): void {
     if (!this.members) {
       this.members = [];
     }
@@ -91,7 +86,7 @@ export class Team {
     for (let i = 0; i < this.members.length; i++) {
       if (this.members[i].id === newMember.id) {
         // The user is already included in the team
-        return null;
+        return;
       }
     }
 
@@ -99,7 +94,7 @@ export class Team {
   }
 }
 
-export async function getOneById(userId: string, teamId: string): Promise<Team> {
+export async function getOneById(teamId: string): Promise<Team> {
   const conn = await connection;
   if (!conn) {
     return null;
